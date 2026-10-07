@@ -128,7 +128,9 @@ export function createTracker(deps: TrackerDeps) {
         const open = await store.get();
         if (open) await closeAt(open, open.lastHeartbeatTs, 'stale on startup');
       }),
-    /** Close whatever is open right now (e.g. before wiping data). */
+    /** Forget the open session without saving it (data is being wiped or replaced). */
+    discard: () => serial(() => store.clear()),
+    /** Close whatever is open right now. */
     closeNow: (why: string) =>
       serial(async () => {
         const open = await store.get();

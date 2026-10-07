@@ -9,13 +9,16 @@ export function formatDuration(ms: number, opts: { seconds?: boolean } = {}): st
   return opts.seconds ? `${s}s` : totalSec > 0 ? '<1m' : '0m';
 }
 
-/** Stopwatch format: "4:07", "1:02:33". */
-export function formatClock(ms: number): string {
+/** Live timer: "45s", "12m 04s", "1h 02m". Units avoid reading as a time of day. */
+export function formatTimer(ms: number): string {
   const totalSec = Math.max(0, Math.floor(ms / 1000));
   const h = Math.floor(totalSec / 3600);
   const m = Math.floor((totalSec % 3600) / 60);
-  const s = String(totalSec % 60).padStart(2, '0');
-  return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${s}` : `${m}:${s}`;
+  const s = totalSec % 60;
+  const two = (n: number) => String(n).padStart(2, '0');
+  if (h > 0) return `${h}h ${two(m)}m`;
+  if (m > 0) return `${m}m ${two(s)}s`;
+  return `${s}s`;
 }
 
 export function formatPercent(x: number | null): string {

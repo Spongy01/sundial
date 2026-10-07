@@ -127,3 +127,15 @@ describe('insights', () => {
     expect(c.scoreDelta).toBeCloseTo(0.25);
   });
 });
+
+import { resolveRange } from './range';
+
+describe('resolveRange', () => {
+  it('resolves presets and the previous equal-length period', () => {
+    expect(resolveRange('today', '2026-05-10')).toMatchObject({ from: '2026-05-10', to: '2026-05-10', prevFrom: '2026-05-09', days: 1 });
+    expect(resolveRange('yesterday', '2026-05-10')).toMatchObject({ from: '2026-05-09', to: '2026-05-09' });
+    expect(resolveRange('7d', '2026-05-10')).toMatchObject({ from: '2026-05-04', prevFrom: '2026-04-27', prevTo: '2026-05-03', days: 7 });
+    expect(resolveRange('30d', '2026-03-20').days).toBe(30); // spans the DST change
+    expect(resolveRange('custom', '2026-05-10', { from: '2026-05-08', to: '2026-05-01' })).toMatchObject({ from: '2026-05-01', to: '2026-05-08', days: 8 });
+  });
+});

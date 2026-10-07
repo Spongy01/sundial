@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
+    "preview:ui": "vite --config preview/vite.config.ts",
     "test": "TZ=America/New_York vitest run",
     "test:watch": "TZ=America/New_York vitest"
   },

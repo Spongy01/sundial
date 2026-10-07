@@ -3,7 +3,7 @@ import { hoursByKind, siteTotals, summarize } from '../core/summary';
 import { updateSettings } from '../data/settings';
 import { CategoryChip, Favicon, SplitBar, SunMark, Toggle } from '../ui/components';
 import { DayDial } from '../ui/DayDial';
-import { formatClock, formatDuration, formatPercent } from '../ui/format';
+import { formatTimer, formatDuration, formatPercent } from '../ui/format';
 import { openDashboard, useCategories, useNow, useOpenSession, useRange, useSettings, withLive } from '../ui/hooks';
 import { localDateKey } from '../core/time';
 
@@ -43,7 +43,7 @@ export function Popup() {
       </header>
 
       <section className="flex items-center gap-4 px-4 pt-1 pb-4">
-        <DayDial hours={hours} now={now} size={150}>
+        <DayDial hours={hours} now={now} size={160}>
           <div className="leading-tight">
             <div className="text-[22px] font-semibold tracking-tight tabular-nums">{formatDuration(summary.totalMs)}</div>
             <div className="text-[11px] text-ink-3">today</div>
@@ -76,7 +76,7 @@ export function Popup() {
               </div>
             </div>
             <div className="text-right">
-              <div className="text-lg font-semibold tabular-nums">{formatClock(now - open.startTs)}</div>
+              <div className="text-lg font-semibold tabular-nums">{formatTimer(now - open.startTs)}</div>
               <div className="text-[11px] text-ink-3">this visit</div>
             </div>
           </div>

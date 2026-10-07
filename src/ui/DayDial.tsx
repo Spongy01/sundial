@@ -33,8 +33,8 @@ export function DayDial({
 }) {
   const [hover, setHover] = useState<number | null>(null);
   const c = size / 2;
-  const r0 = size * 0.3;
-  const r1 = size * 0.48;
+  const r0 = size * 0.285;
+  const r1 = size * 0.395;
   const pad = 0.012; // radians of gap between wedges
   const d = new Date(now);
   const nowH = d.getHours() + d.getMinutes() / 60;
@@ -70,7 +70,7 @@ export function DayDial({
         })}
         {[0, 6, 12, 18].map((h) => {
           const a = angle(h);
-          const r = r0 - 9;
+          const r = r1 + size * 0.055;
           return (
             <text
               key={h}
@@ -78,10 +78,10 @@ export function DayDial({
               y={c + r * Math.sin(a)}
               textAnchor="middle"
               dominantBaseline="central"
-              fontSize={size * 0.052}
+              fontSize={Math.max(9, size * 0.058)}
               fill="var(--ink-3)"
             >
-              {h === 12 ? 'noon' : h === 0 ? '12a' : h === 6 ? '6a' : '6p'}
+              {h === 12 ? '12p' : h === 0 ? '12a' : h === 6 ? '6a' : '6p'}
             </text>
           );
         })}

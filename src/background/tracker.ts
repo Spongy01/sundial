@@ -1,6 +1,8 @@
 import { computeDesiredTarget, sameTarget, type Categorizer } from '../core/eligibility';
 import { localDateKey, splitAtMidnight } from '../core/time';
-import type { OpenSession, Settings, Snapshot, Target } from '../core/types';
+import type { OpenSession, SessionSink, Settings, Snapshot, Target } from '../core/types';
+
+export type { Segment, SessionSink } from '../core/types';
 import type { OpenSessionStore } from './openSession';
 
 /** Alarm period. Chrome < 120 clamps this to 1 minute, which GAP_MS tolerates. */
@@ -12,22 +14,6 @@ export const FLUSH_INTERVAL_MS = 30_000;
 export const GAP_MS = 150_000;
 /** Sessions shorter than this that never got persisted are dropped as noise. */
 export const MIN_SESSION_MS = 1_000;
-
-/** A persisted slice of a session: always within one local day. */
-export interface Segment {
-  session: OpenSession;
-  /** Existing row to extend, or undefined to create one. */
-  rowId: number | undefined;
-  date: string;
-  rowStartTs: number;
-  fromTs: number;
-  toTs: number;
-}
-
-export interface SessionSink {
-  /** Persist [fromTs, toTs) onto the row (creating it if needed). Returns the row id. */
-  writeSegment(seg: Segment): Promise<number>;
-}
 
 export interface TrackerDeps {
   now(): number;

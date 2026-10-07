@@ -1,6 +1,5 @@
-import { UNCATEGORIZED } from '../core/eligibility';
 import { getSettings, onSettingsChanged } from '../data/settings';
-import { consoleSink } from './consoleSink';
+import { repo } from '../data/repo';
 import { openSessionStore } from './openSession';
 import { takeSnapshot } from './snapshot';
 import { createTracker, FLUSH_INTERVAL_MS } from './tracker';
@@ -11,9 +10,9 @@ const tracker = createTracker({
   now: () => Date.now(),
   settings: getSettings,
   snapshot: (s) => takeSnapshot(s.idleThresholdSec),
-  categorizer: async () => UNCATEGORIZED,
+  categorizer: repo.getCategorizer,
   store: openSessionStore,
-  sink: consoleSink,
+  sink: repo.sink,
   log: (msg, ...rest) => console.info(`[sundial] ${msg}`, ...rest),
 });
 

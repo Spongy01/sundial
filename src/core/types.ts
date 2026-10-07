@@ -65,3 +65,19 @@ export interface OpenSession extends Target {
   rowDate: string;
   rowStartTs: number;
 }
+
+/** A persisted slice of a session: always within one local day. */
+export interface Segment {
+  session: OpenSession;
+  /** Existing row to extend, or undefined to create one. */
+  rowId: number | undefined;
+  date: string;
+  rowStartTs: number;
+  fromTs: number;
+  toTs: number;
+}
+
+export interface SessionSink {
+  /** Persist [fromTs, toTs) onto the row (creating it if needed). Returns the row id. */
+  writeSegment(seg: Segment): Promise<number>;
+}

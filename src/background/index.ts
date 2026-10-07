@@ -45,6 +45,9 @@ chrome.idle.onStateChanged.addListener((state) => void tracker.reconcile(`idle-$
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === FLUSH_ALARM) void tracker.reconcile('alarm');
 });
+chrome.runtime.onMessage.addListener((msg: unknown) => {
+  if ((msg as { type?: string } | null)?.type === 'reconcile') void tracker.reconcile('ui');
+});
 onSettingsChanged((s) => {
   chrome.idle.setDetectionInterval(Math.max(15, s.idleThresholdSec));
   void tracker.reconcile('settings');

@@ -1,1 +1,94 @@
 @import "tailwindcss";
+@import "@fontsource-variable/instrument-sans";
+
+/*
+ * Sundial tokens. Light is "clear morning", dark is "dusk": cool slate
+ * surfaces so the three category hues (validated for CVD separation in both
+ * modes) carry all the color on the page.
+ */
+:root {
+  color-scheme: light dark;
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --surface-2: #e9edf2;
+  --ink: #17202c;
+  --ink-2: #4c5768;
+  --ink-3: #6f7a8b;
+  --line: #dfe4eb;
+  --sun: #f0a92c;
+  --cat-productive: #1d8f78;
+  --cat-entertainment: #e0702c;
+  --cat-neutral: #5b5bd6;
+  --cat-uncategorized: #a19d97;
+  --danger: #c83a3a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12171f;
+    --surface: #19202a;
+    --surface-2: #232b37;
+    --ink: #e8ecf1;
+    --ink-2: #b2bccb;
+    --ink-3: #8a96a7;
+    --line: #2a3340;
+    --sun: #f3b54a;
+    --cat-productive: #1f9a82;
+    --cat-entertainment: #d9652a;
+    --cat-neutral: #8a84ec;
+    --cat-uncategorized: #7f7c78;
+    --danger: #ec6a6a;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-sun: var(--sun);
+  --color-danger: var(--danger);
+  --color-productive: var(--cat-productive);
+  --color-entertainment: var(--cat-entertainment);
+  --color-neutral-cat: var(--cat-neutral);
+  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button {
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0ms !important;
+      animation-duration: 0ms !important;
+    }
+  }
+}
+
+/* Uncategorized time is hatched so it never relies on color alone. */
+.hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--cat-uncategorized) 0 2px,
+    transparent 2px 5px
+  );
+}

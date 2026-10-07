@@ -10,7 +10,7 @@ import { installFakeChrome } from './fakeChrome';
 import { seed } from './seed';
 
 const params = new URLSearchParams(location.search);
-installFakeChrome();
+installFakeChrome(params.has('empty'));
 if (params.get('range')) localStorage.setItem('sundial.range', JSON.stringify({ preset: params.get('range'), custom: { from: '', to: '' } }));
 
 async function main() {

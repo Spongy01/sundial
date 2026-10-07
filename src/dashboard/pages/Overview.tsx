@@ -5,6 +5,7 @@ import type { DateRange } from '../../core/range';
 import { dailyTrend, hourHeatmap, needsLabel, siteTotals, summarize } from '../../core/summary';
 import { addDays } from '../../core/time';
 import { db } from '../../data/db';
+import { SunMark } from '../../ui/components';
 import { useCategories, useNow, useOpenSession, useRange, withLive } from '../../ui/hooks';
 import { Hero } from '../components/Hero';
 import { HourHeatmap } from '../components/HourHeatmap';
@@ -68,6 +69,10 @@ export function Overview({ range, today }: { range: DateRange; today: string }) 
     return <div className="h-96 animate-pulse rounded-3xl bg-surface-2/60" aria-label="Loading" />;
   }
 
+  if (view.summary.totalMs === 0) {
+    return <EmptyRange range={range} today={today} hasAnyData={view.week.previous.totalMs + view.week.current.totalMs > 0} />;
+  }
+
   return (
     <div className="space-y-5">
       <Hero summary={view.summary} previous={view.previous} range={range} />
@@ -81,5 +86,20 @@ export function Overview({ range, today }: { range: DateRange; today: string }) 
       <Trend data={view.trendData} xKey={range.days === 1 ? 'hour' : 'date'} categories={cats.list} />
       <HourHeatmap cells={view.heat} byWeekday={range.days >= 7} />
     </div>
+  );
+}
+
+function EmptyRange({ range, today, hasAnyData }: { range: DateRange; today: string; hasAnyData: boolean }) {
+  const isToday = range.to >= today;
+  return (
+    <section className="grid place-items-center rounded-3xl bg-surface px-6 py-16 text-center ring-1 ring-line">
+      <SunMark size={40} />
+      <h2 className="mt-4 text-xl font-semibold">{isToday && !hasAnyData ? 'Nothing recorded yet' : 'No browsing in this range'}</h2>
+      <p className="mt-2 max-w-md text-sm text-ink-2">
+        {isToday && !hasAnyData
+          ? 'Sundial counts time on websites in your focused browser window. Open a site and come back in a minute.'
+          : 'Try a longer range, or check that tracking is switched on in the popup.'}
+      </p>
+    </section>
   );
 }

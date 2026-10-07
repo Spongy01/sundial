@@ -17,7 +17,7 @@ export function TopSites({ sites }: { sites: SiteTotal[] }) {
     <section className="rounded-3xl bg-surface p-5 ring-1 ring-line md:p-6">
       <div className="flex items-baseline justify-between">
         <h2 className="text-base font-semibold">Top sites</h2>
-        {sites.length > 0 && <span className="text-xs text-ink-3">{sites.length} sites</span>}
+        {sites.length > 0 && <span className="text-xs text-ink-3">{sites.length} {sites.length === 1 ? 'site' : 'sites'}</span>}
       </div>
       {sites.length === 0 ? (
         <Empty title="No browsing recorded in this range">Pick a different range, or browse a little and check back.</Empty>

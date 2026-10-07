@@ -4,7 +4,7 @@ const ev = () => {
   return { addListener: (l: L) => ls.push(l), removeListener: (l: L) => ls.splice(ls.indexOf(l), 1), fire: (...a: unknown[]) => ls.forEach((l) => l(...a)) };
 };
 
-export function installFakeChrome() {
+export function installFakeChrome(empty = false) {
   const onChanged = ev();
   const area = (name: string, init: Record<string, unknown> = {}) => {
     const data: Record<string, unknown> = { ...init };
@@ -32,7 +32,7 @@ export function installFakeChrome() {
     storage: {
       onChanged,
       local: area('local'),
-      session: area('session', {
+      session: area('session', empty ? {} : {
         openSession: {
           key: 'github.com', domain: 'github.com', host: 'github.com', categoryId: 'productive', ruleSource: 'dictionary',
           tabId: 1, windowId: 1, startTs: now - 754_000, flushedUntilTs: now - 12_000, lastHeartbeatTs: now - 12_000,

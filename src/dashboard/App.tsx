@@ -5,6 +5,7 @@ import { useToday } from '../ui/hooks';
 import { RangeSwitcher } from './components/RangeSwitcher';
 import { Overview } from './pages/Overview';
 import { Settings } from './pages/Settings';
+import { Welcome } from './pages/Welcome';
 
 export type Route = 'overview' | 'settings' | 'welcome';
 
@@ -33,7 +34,7 @@ function loadRange(): { preset: RangePreset; custom: { from: string; to: string 
   }
 }
 
-export function App({ welcome }: { welcome?: ReactNode }) {
+export function App() {
   const route = useRoute();
   const today = useToday();
   const saved = loadRange();
@@ -53,7 +54,7 @@ export function App({ welcome }: { welcome?: ReactNode }) {
     document.title = route === 'settings' ? 'Sundial settings' : 'Sundial';
   }, [route]);
 
-  if (route === 'welcome' && welcome) return <>{welcome}</>;
+  if (route === 'welcome') return <Welcome />;
 
   return (
     <div className="min-h-screen">

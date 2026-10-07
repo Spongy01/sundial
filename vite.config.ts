@@ -7,6 +7,8 @@ import manifest from './manifest.config.ts';
 export default defineConfig({
   plugins: [react(), tailwindcss(), crx({ manifest })],
   build: {
+    // Extension pages load chunks from the package itself; no polyfill (and no fetch) needed.
+    modulePreload: { polyfill: false },
     rollupOptions: {
       input: { dashboard: 'src/dashboard/index.html' },
     },
